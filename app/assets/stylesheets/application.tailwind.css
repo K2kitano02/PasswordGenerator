@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #00f2ff;
+  --color-accent-purple: #9333ea;
+  --color-background-dark: #0a0b10;
+}
+
+/* Auth / CYBERVAULT component classes */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-shadow:focus-within {
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+}
+
+.glow-button {
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.ghost-purple {
+  border: 1px solid rgba(147, 51, 234, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ghost-purple:hover {
+  background: rgba(147, 51, 234, 0.1);
+  border-color: #9333ea;
+  box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+}
+
+.bg-orb-cyan {
+  background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(0, 242, 255, 0) 70%);
+}
+
+.bg-orb-purple {
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, rgba(147, 51, 234, 0) 70%);
+}
+
+.bg-grid-dots {
+  background-image: radial-gradient(#00f2ff 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.font-display {
+  font-family: Inter, "Noto Sans JP", sans-serif;
+}

@@ -1,0 +1,106 @@
+<% content_for :head do %>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<% end %>
+
+<div class="font-display min-h-screen flex items-center justify-center overflow-hidden relative bg-background-dark text-slate-100">
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-orb-cyan rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-orb-purple rounded-full pointer-events-none"></div>
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-dots"></div>
+
+  <main class="relative z-10 w-full max-w-[450px] px-6 py-8">
+    <div class="flex flex-col items-center mb-8 text-center">
+      <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 border border-primary/30">
+        <span class="material-icons text-primary text-4xl">vps_guard</span>
+      </div>
+      <h1 class="text-3xl font-bold tracking-tight text-white uppercase">CYBER<span class="text-primary">VAULT</span></h1>
+      <p class="text-slate-400 mt-2 text-sm tracking-widest">次世代バイオメトリック・セキュリティ</p>
+    </div>
+
+    <div class="glass-card rounded-xl p-8 shadow-2xl">
+      <h2 class="text-xl font-bold mb-6 text-white text-center">新規登録</h2>
+
+      <% if @user.errors.any? %>
+        <div class="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/30">
+          <p class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2"><%= @user.errors.count %>件のエラー</p>
+          <ul class="text-sm text-red-300 space-y-1">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @user, url: users_path, local: true, class: "space-y-6" do |f| %>
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1" for="user_email">メールアドレス</label>
+          <div class="relative group neon-shadow rounded-lg">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="material-icons text-slate-500 text-xl group-focus-within:text-primary transition-colors">alternate_email</span>
+            </div>
+            <%= f.email_field :email, class: "block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all sm:text-sm", placeholder: "example@cybervault.io", id: "user_email" %>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1" for="user_password">パスワード</label>
+          <div class="relative group neon-shadow rounded-lg">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="material-icons text-slate-500 text-xl group-focus-within:text-primary transition-colors">lock</span>
+            </div>
+            <%= f.password_field :password, class: "block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all sm:text-sm", placeholder: "6文字以上", id: "user_password" %>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1" for="user_password_confirmation">パスワード（確認）</label>
+          <div class="relative group neon-shadow rounded-lg">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="material-icons text-slate-500 text-xl group-focus-within:text-primary transition-colors">lock</span>
+            </div>
+            <%= f.password_field :password_confirmation, class: "block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all sm:text-sm", placeholder: "••••••••", id: "user_password_confirmation" %>
+          </div>
+        </div>
+
+        <div class="space-y-4 pt-2">
+          <button class="glow-button w-full bg-primary text-background-dark font-bold py-3.5 px-4 rounded-lg flex items-center justify-center space-x-2 group" type="submit">
+            <span class="tracking-widest">アカウントを作成</span>
+            <span class="material-icons text-xl group-hover:translate-x-1 transition-transform">bolt</span>
+          </button>
+          <%= link_to root_path, class: "ghost-purple w-full text-accent-purple font-bold py-3.5 px-4 rounded-lg flex items-center justify-center space-x-2 no-underline block" do %>
+            <span class="material-icons text-xl">person_search</span>
+            <span class="tracking-widest">ゲストとして利用</span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="mt-8 text-center border-t border-white/5 pt-6">
+        <p class="text-sm text-slate-400">
+          既にアカウントをお持ちですか？
+          <%= link_to "ログイン", root_path, class: "text-primary font-bold hover:underline underline-offset-4 ml-1" %>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 flex justify-center items-center space-x-6">
+      <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono tracking-tighter uppercase">
+        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+        <span>SYSTEM ONLINE</span>
+      </div>
+      <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono tracking-tighter uppercase">
+        <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+        <span>NODE: TOK-01</span>
+      </div>
+      <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono tracking-tighter uppercase">
+        <span class="material-icons text-xs">verified_user</span>
+        <span>AES-256 BIT</span>
+      </div>
+    </div>
+  </main>
+
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-[20%] left-[15%] w-1 h-1 bg-primary/40 rounded-full"></div>
+    <div class="absolute top-[60%] right-[10%] w-2 h-2 bg-primary/20 rounded-full"></div>
+    <div class="absolute bottom-[20%] left-[30%] w-1 h-1 bg-purple-500/30 rounded-full"></div>
+    <div class="absolute top-[10%] right-[40%] w-1.5 h-1.5 bg-white/10 rounded-full"></div>
+  </div>
+</div>
