@@ -13,44 +13,39 @@
     </div>
 
     <div class="glass-card rounded-xl p-8 shadow-2xl">
-      <h2 class="text-xl font-bold mb-6 text-white text-center">新規登録</h2>
+      <h2 class="text-xl font-bold mb-6 text-white text-center">おかえりなさい</h2>
 
-      <%= render "shared/object_errors", object: @user %>
+      <%= render "shared/flash_messages" %>
 
-      <%= form_with model: @user, url: users_path, local: true, class: "space-y-6" do |f| %>
+      <%= form_with url: session_path, local: true, class: "space-y-6" do |f| %>
         <div class="space-y-2">
-          <label class="auth-label" for="user_email">メールアドレス</label>
+          <label class="auth-label" for="session_email">メールアドレス</label>
           <div class="auth-field-wrapper relative group neon-shadow rounded-lg">
             <div class="auth-input-icon-wrapper absolute inset-y-0 left-0 flex items-center pointer-events-none">
-              <span class="material-icons auth-input-icon">alternate_email</span>
+              <span class="material-icons auth-input-icon ">alternate_email</span>
             </div>
-            <%= f.email_field :email, class: "auth-input auth-input-with-icon", placeholder: "example@cybervault.io", id: "user_email" %>
+            <%= text_field_tag "session[email]", params.dig(:session, :email), class: "auth-input auth-input-with-icon", placeholder: "example@cybervault.io", id: "session_email", type: "email", autocomplete: "email" %>
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="auth-label" for="user_password">パスワード</label>
+          <label class="auth-label" for="session_password">マスターパスワード</label>
           <div class="auth-field-wrapper relative group neon-shadow rounded-lg">
             <div class="auth-input-icon-wrapper absolute inset-y-0 left-0 flex items-center pointer-events-none">
               <span class="material-icons auth-input-icon">lock</span>
             </div>
-            <%= f.password_field :password, class: "auth-input auth-input-with-icon", placeholder: "6文字以上", id: "user_password" %>
+            <%= password_field_tag "session[password]", nil, class: "auth-input auth-input-with-icon", placeholder: "••••••••••••", id: "session_password", autocomplete: "current-password" %>
           </div>
         </div>
 
-        <div class="space-y-2">
-          <label class="auth-label" for="user_password_confirmation">パスワード（確認）</label>
-          <div class="auth-field-wrapper relative group neon-shadow rounded-lg">
-            <div class="auth-input-icon-wrapper absolute inset-y-0 left-0 flex items-center pointer-events-none">
-              <span class="material-icons auth-input-icon">lock</span>
-            </div>
-            <%= f.password_field :password_confirmation, class: "auth-input auth-input-with-icon", placeholder: "••••••••", id: "user_password_confirmation" %>
-          </div>
+        <div class="flex items-center space-x-2 px-1">
+          <%= check_box_tag "session[remember_me]", "1", false, class: "w-4 h-4 rounded border-white/10 bg-white/5 text-primary focus:ring-primary focus:ring-offset-background-dark", id: "session_remember_me" %>
+          <label class="text-xs text-slate-400" for="session_remember_me">24時間ログイン状態を保持する</label>
         </div>
 
         <div class="space-y-4 pt-2">
           <button class="glow-button w-full bg-primary text-background-dark font-bold py-3.5 px-4 rounded-lg flex items-center justify-center space-x-2 group" type="submit">
-            <span class="tracking-widest">アカウントを作成</span>
+            <span class="tracking-widest">認証を開始する</span>
             <span class="material-icons text-xl group-hover:translate-x-1 transition-transform">bolt</span>
           </button>
           <%= link_to root_path, class: "ghost-purple w-full text-accent-purple font-bold py-3.5 px-4 rounded-lg flex items-center justify-center space-x-2 no-underline block" do %>
@@ -62,8 +57,8 @@
 
       <div class="mt-8 text-center border-t border-white/5 pt-6">
         <p class="text-sm text-slate-400">
-          既にアカウントをお持ちですか？
-          <%= link_to "ログイン", new_session_path, class: "text-primary font-bold hover:underline underline-offset-4 ml-1" %>
+          アカウントをお持ちでないですか？
+          <%= link_to "新規登録", new_users_path, class: "text-primary font-bold hover:underline underline-offset-4 ml-1" %>
         </p>
       </div>
     </div>

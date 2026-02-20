@@ -1,0 +1,10 @@
+<% if local_assigns[:object].present? && object.errors.any? %>
+  <div class="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/30">
+    <p class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2"><%= object.errors.count %>件のエラー</p>
+    <ul class="text-sm text-red-300 space-y-1">
+      <% object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

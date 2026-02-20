@@ -1,0 +1,27 @@
+<div class="font-display min-h-screen flex flex-col overflow-hidden relative bg-background-dark text-slate-100">
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-orb-cyan rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-orb-purple rounded-full pointer-events-none"></div>
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-dots"></div>
+
+  <header class="relative z-10 flex justify-between items-center px-6 py-4 border-b border-white/5">
+    <div class="flex items-center space-x-2">
+      <span class="material-icons text-primary text-2xl">vps_guard</span>
+      <span class="text-lg font-bold text-white uppercase">CYBER<span class="text-primary">VAULT</span></span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="text-sm text-slate-400"><%= @user.email %></span>
+      <%= button_to "ログアウト", session_path, method: :delete, class: "ghost-purple text-accent-purple font-bold py-2 px-4 rounded-lg text-sm no-underline", form: { class: "inline" } %>
+    </div>
+  </header>
+
+  <main class="relative z-10 flex-1 flex items-center justify-center px-6 py-8">
+    <div class="glass-card rounded-xl p-8 shadow-2xl w-full max-w-[500px]">
+      <h1 class="text-xl font-bold mb-2 text-white">おかえりなさい</h1>
+      <p class="text-slate-400 text-sm mb-6"><%= @user.email %> でログイン中です。</p>
+      <p class="text-slate-500 text-sm">保存したパスワード一覧はここに表示されます。（未実装）</p>
+    </div>
+  </main>
+
+  <%= render "shared/auth_status_footer" %>
+  <%= render "shared/auth_decorations" %>
+</div>

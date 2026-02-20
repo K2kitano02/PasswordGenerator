@@ -55,3 +55,64 @@
 .font-display {
   font-family: Inter, "Noto Sans JP", sans-serif;
 }
+
+/* Auth form: 共通ラベル・入力スタイル（users/new と sessions/new で統一） */
+.auth-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgb(148 163 184);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-left: 0.25rem;
+}
+
+/* アイコン付き入力: アイコン領域の幅（プレースホルダー／文字の padding は .auth-input.auth-input-with-icon で指定） */
+.auth-input-icon-wrapper {
+  padding-left: 1rem;
+  width: 4rem;
+  min-width: 4rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: opacity 0.2s;
+}
+
+.auth-input-icon {
+  color: rgb(100 116 139);
+  font-size: 1.25rem;
+  transition: color 0.2s;
+}
+
+.group:focus-within .auth-input-icon {
+  color: #00f2ff;
+}
+
+.auth-input {
+  display: block;
+  width: 100%;
+  padding-top: 0.75rem;
+  padding-right: 1rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* アイコン付き入力は .auth-input の padding を上書きする（shorthand だと上書きされないため上で longhand にしている） */
+.auth-input.auth-input-with-icon {
+  padding-left: 2.5rem;
+  padding-right: 0.75rem;
+}
+
+.auth-input::placeholder {
+  color: rgb(71 85 105);
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: rgba(0, 242, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.25);
+}
