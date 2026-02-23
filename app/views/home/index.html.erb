@@ -1,2 +1,81 @@
-<h1 class="text-2xl font-bold text-red-500">PassGene</h1>
-<p class="text-blue-500">開発をここから始めましょう。</p>
+<% content_for :title, "PassGene - 安全なパスワード管理" %>
+<div class="font-display min-h-screen flex flex-col items-center justify-center overflow-hidden relative bg-background-dark text-slate-100" data-controller="onboarding">
+  <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-orb-cyan rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-orb-purple rounded-full pointer-events-none"></div>
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-dots"></div>
+
+  <main class="relative z-10 w-full max-w-[800px] px-6 flex flex-col items-center">
+    <!-- スライド1: 安全なパスワード管理 -->
+    <div class="glass-card rounded-[2rem] p-12 md:p-16 w-full max-w-lg flex flex-col items-center text-center shadow-2xl transition-opacity" data-onboarding-target="slide">
+      <div class="relative mb-12 group">
+        <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 opacity-50 pointer-events-none"></div>
+        <div class="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center">
+          <span class="material-icons text-primary text-[80px] md:text-[120px] neon-glow-icon select-none">enhanced_encryption</span>
+          <div class="absolute inset-0 border-2 border-primary/20 rounded-full animate-spin-10s pointer-events-none"></div>
+          <div class="absolute inset-4 border border-primary/10 rounded-full animate-spin-15s-reverse pointer-events-none"></div>
+        </div>
+      </div>
+      <div class="space-y-4 max-w-md">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-2">安全なパスワード管理</h1>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">近未来のセキュリティを体験しましょう</p>
+      </div>
+      <div class="mt-16 flex flex-col items-center gap-8 w-full">
+        <button type="button" data-action="click->onboarding#next" class="group flex items-center justify-center gap-3 bg-white/5 hover:bg-primary hover:text-background-dark border border-white/10 hover:border-primary transition-all duration-300 px-8 py-4 rounded-full min-w-[200px] font-bold text-white">
+          <span>次へ進む</span>
+          <span class="material-icons text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- スライド2: 強力なパスワードを瞬時に生成 -->
+    <div class="glass-card rounded-[2rem] p-12 md:p-16 w-full max-w-lg flex flex-col items-center text-center shadow-2xl hidden" data-onboarding-target="slide">
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/30">
+          <span class="material-icons text-primary text-xl">key</span>
+        </div>
+        <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">Step 02</span>
+        <span class="text-sm font-bold text-primary uppercase tracking-wider">/ Generation</span>
+      </div>
+      <div class="space-y-4 max-w-md">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight text-white">
+          強力なパスワードを<br/><span class="text-primary">瞬時に生成</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-md mx-auto">
+          長さや特殊文字を自由にカスタマイズ可能。あなたのデジタル資産を、最高レベルの暗号化強度で保護します。
+        </p>
+      </div>
+      <div class="mt-8 w-full glass-panel rounded-xl p-4 border border-white/10">
+        <p class="text-[10px] text-slate-500 font-mono uppercase tracking-wider mb-2">Generator</p>
+        <p class="font-mono text-primary text-lg tracking-wider break-all">xK9!pL$2mQ&zP7#wR</p>
+        <div class="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden mt-2">
+          <div class="h-full rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" style="width: 100%"></div>
+        </div>
+      </div>
+      <div class="mt-12 flex flex-col items-center gap-8 w-full">
+        <%= link_to new_session_path, class: "glow-button group flex items-center justify-center gap-3 bg-primary text-background-dark font-bold py-4 px-8 rounded-full min-w-[200px] no-underline" do %>
+          <span>はじめる</span>
+          <span class="material-icons text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- ページネーション dots（タップで切り替え） -->
+    <div class="flex items-center justify-center gap-3 mt-8">
+      <button type="button" data-onboarding-target="dot" data-index="0" data-action="click->onboarding#goTo" class="h-2 rounded-full transition-all duration-300 cursor-pointer flex-shrink-0 w-8 bg-primary shadow-[0_0_10px_rgba(0,242,255,0.5)]" aria-label="1ページ目"></button>
+      <button type="button" data-onboarding-target="dot" data-index="1" data-action="click->onboarding#goTo" class="w-2 h-2 rounded-full bg-slate-700 transition-all duration-300 cursor-pointer flex-shrink-0" aria-label="2ページ目"></button>
+    </div>
+  </main>
+
+  <div class="mt-12 flex justify-center items-center gap-12">
+    <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono tracking-widest uppercase">
+      <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+      <span>Encrypted Connection Active</span>
+    </div>
+    <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono tracking-widest uppercase">
+      <span class="material-icons text-xs">verified_user</span>
+      <span>Military Grade AES-256</span>
+    </div>
+  </div>
+
+  <%= render "shared/auth_decorations" %>
+</div>

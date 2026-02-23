@@ -1,0 +1,103 @@
+<% content_for :title, "#{@password.website_url.presence || 'パスワード'} - CyberVault" %>
+<%= render layout: "shared/cybervault_app_layout", locals: {
+  active_nav: :dashboard,
+  page_title: @password.website_url.presence || "パスワード詳細",
+  page_subtitle: "最終更新: #{@password.updated_at.strftime('%Y/%m/%d')}",
+  header_variant: :default,
+  compact_header: true
+} do %>
+  <section class="px-10 py-4 flex-1 z-10 min-h-0">
+    <div class="max-w-4xl mx-auto space-y-4">
+      <!-- Header: Logo + Title -->
+      <div class="flex items-center gap-4 mb-4">
+        <div class="size-14 rounded-xl glass-panel p-3 flex items-center justify-center border border-primary/30 neon-glow-cyan flex-shrink-0">
+          <span class="text-2xl font-bold text-primary"><%= (@password.website_url.to_s)[0]&.upcase || "?" %></span>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-2xl font-bold tracking-tight text-white truncate"><%= @password.website_url.presence || "未設定" %></h1>
+          <p class="text-slate-400 text-xs">最終更新: <%= @password.updated_at.strftime('%Y/%m/%d') %></p>
+        </div>
+      </div>
+
+      <!-- Main: ログイン情報 -->
+      <div class="glass-panel rounded-xl p-5 space-y-4" data-controller="password-reveal" data-password-reveal-password-value="<%= escape_javascript(@password.password.to_s) %>" data-password-reveal-username-value="<%= escape_javascript(@password.username.to_s) %>">
+        <h3 class="text-base font-bold text-white border-b border-primary/10 pb-2">ログイン情報</h3>
+
+        <!-- サイトURL -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">サイトURL</label>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3 border border-white/5">
+            <span class="text-slate-200 truncate flex-1 mr-2"><%= @password.website_url.presence || "—" %></span>
+            <% if @password.website_url.present? %>
+              <% url = @password.website_url.match?(/\Ahttps?:\/\//i) ? @password.website_url : "https://#{@password.website_url}" %>
+              <%= link_to url, target: "_blank", rel: "noopener", class: "text-primary hover:text-white transition-colors flex-shrink-0" do %>
+                <span class="material-icons">open_in_new</span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- ユーザー名 / メールアドレス -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ユーザー名 / メールアドレス</label>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3 border border-white/5">
+            <span class="text-slate-200 truncate flex-1 mr-2"><%= @password.username.presence || "—" %></span>
+            <button type="button" data-action="click->password-reveal#copyUsername" class="text-primary hover:text-white transition-colors flex-shrink-0" title="コピー" aria-label="コピー">
+              <span class="material-icons" data-password-reveal-target="copyUsernameIcon">content_copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- パスワード -->
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">パスワード</label>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3 border border-white/5">
+            <span class="font-mono text-base tracking-widest text-primary/80 flex-1 mr-2 truncate" data-password-reveal-target="maskedDisplay">••••••••••••••••</span>
+            <span class="font-mono text-base tracking-widest text-slate-200 hidden truncate flex-1 mr-2" data-password-reveal-target="plainDisplay"></span>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button type="button" data-action="click->password-reveal#toggle" data-password-reveal-target="toggleBtn" class="text-slate-400 hover:text-primary transition-colors" title="表示/非表示">
+                <span class="material-icons" data-password-reveal-target="toggleIcon">visibility</span>
+              </button>
+              <button type="button" data-action="click->password-reveal#copyPassword" class="text-primary hover:text-white transition-colors" title="コピー" aria-label="コピー">
+                <span class="material-icons" data-password-reveal-target="copyPasswordIcon">content_copy</span>
+              </button>
+            </div>
+          </div>
+          <!-- パスワード強度 -->
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">パスワード強度: <span class="<%= strength_color_class(@password.entropy_bits) %> font-bold"><%= password_strength_label(@password.entropy_bits) %></span></span>
+              <span class="<%= strength_color_class(@password.entropy_bits) %>"><%= strength_percent(@password.entropy_bits) %>%</span>
+            </div>
+            <div class="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-300 <%= password_strength_bar_color_class(@password.entropy_bits) %> <%= 'shadow-[0_0_8px_var(--color-primary)]' if @password.entropy_bits == 3 %>" style="width: <%= password_strength_bar_width(@password.entropy_bits) %>"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- メモ -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">メモ</label>
+          <div class="bg-black/20 rounded-lg p-3 border border-white/5 min-h-[72px] text-slate-300 text-sm leading-relaxed whitespace-pre-wrap"><%= @password.memo.presence || "—" %></div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="pt-4 border-t border-primary/10 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <%= link_to edit_password_path(@password), class: "glow-button bg-primary text-background-dark px-6 py-2.5 rounded-lg font-bold text-sm hover:brightness-110 transition-all no-underline inline-flex items-center gap-1.5" do %>
+              <span class="material-icons text-base">edit</span>
+              情報を編集
+            <% end %>
+            <%= link_to passwords_path, class: "text-slate-400 hover:text-white text-sm font-medium transition-colors no-underline" do %>
+              一覧へ戻る
+            <% end %>
+          </div>
+          <%= button_to password_path(@password), method: :delete, data: { turbo_confirm: "このエントリを削除してもよろしいですか？" }, class: "flex items-center justify-center gap-1.5 text-red-400 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-all text-sm font-semibold border-0 bg-transparent cursor-pointer" do %>
+            <span class="material-icons text-base">delete</span>
+            <span>削除</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>

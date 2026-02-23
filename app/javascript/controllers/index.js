@@ -5,4 +5,12 @@
 import { application } from "./application"
 
 import HelloController from "./hello_controller"
+import OnboardingController from "./onboarding_controller"
+import PasswordGeneratorController from "./password_generator_controller"
+import PasswordRevealController from "./password_reveal_controller"
+import PasswordRowController from "./password_row_controller"
 application.register("hello", HelloController)
+application.register("onboarding", OnboardingController)
+application.register("password-generator", PasswordGeneratorController)
+application.register("password-reveal", PasswordRevealController)
+application.register("password-row", PasswordRowController)

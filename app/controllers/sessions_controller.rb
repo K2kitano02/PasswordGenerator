@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     # find_by で見つかり、かつ authenticate(パスワード) が true ならログイン成功
     if user&.authenticate(session_params[:password])
       session[:user_id] = user.id
-      redirect_to dashboard_path, notice: "ログインしました"
+      redirect_to passwords_path, notice: "ログインしました"
     else
       flash.now[:alert] = "メールアドレスまたはパスワードが正しくありません"
       render :new, status: :unprocessable_entity

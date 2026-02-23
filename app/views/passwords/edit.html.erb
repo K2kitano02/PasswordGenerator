@@ -1,0 +1,36 @@
+<% content_for :title, "編集 - CyberVault" %>
+<%= render layout: "shared/cybervault_app_layout", locals: {
+  active_nav: :dashboard,
+  page_title: "情報を編集",
+  page_subtitle: @password.website_url.presence || "パスワード",
+  header_variant: :default
+} do %>
+  <section class="px-10 pb-20 flex-1 z-10">
+    <div class="max-w-2xl mx-auto">
+      <%= render "shared/object_errors", object: @password %>
+      <%= form_with model: @password, url: password_path(@password), method: :patch, local: true, class: "glass-panel rounded-xl p-8 space-y-6" do |f| %>
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">サイトURL</label>
+          <%= f.text_field :website_url, class: "w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary/40 focus:ring-0 transition-all", placeholder: "https://example.com" %>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ユーザー名 / メールアドレス</label>
+          <%= f.text_field :username, class: "w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary/40 focus:ring-0 transition-all", placeholder: "user@example.com" %>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">パスワード（変更する場合のみ入力）</label>
+          <%= f.password_field :password, class: "w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary/40 focus:ring-0 transition-all", placeholder: "空欄の場合は変更しません", value: nil %>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">メモ</label>
+          <%= f.text_area :memo, rows: 4, class: "w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary/40 focus:ring-0 transition-all resize-y", placeholder: "メモ（任意）" %>
+        </div>
+        <%= f.hidden_field :entropy_bits %>
+        <div class="flex items-center gap-4 pt-4">
+          <%= f.submit "更新する", class: "glow-button bg-primary text-background-dark px-8 py-3 rounded-lg font-bold text-sm hover:brightness-110 transition-all cursor-pointer" %>
+          <%= link_to "キャンセル", password_path(@password), class: "text-slate-400 hover:text-white text-sm font-medium transition-colors no-underline" %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>

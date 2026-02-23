@@ -1,0 +1,16 @@
+<%# 共通レイアウト: active_nav (:dashboard | :password_new), page_title, page_subtitle(optional), header_variant (:dashboard | :default) %>
+<div class="font-display min-h-screen flex overflow-hidden bg-background-dark text-slate-100">
+  <%= render "shared/cybervault_background" %>
+  <%= render "shared/cybervault_sidebar", active_nav: local_assigns[:active_nav] || :dashboard %>
+
+  <main class="relative z-10 flex-1 flex flex-col min-h-screen <%= local_assigns[:main_overflow] == :hidden ? 'overflow-hidden' : 'overflow-y-auto' %>">
+    <%= render "shared/cybervault_header",
+          page_title: local_assigns[:page_title],
+          page_subtitle: local_assigns[:page_subtitle],
+          header_variant: local_assigns[:header_variant] || :default %>
+
+    <%= yield %>
+
+    <%= render "shared/cybervault_footer" %>
+  </main>
+</div>

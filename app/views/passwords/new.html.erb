@@ -1,0 +1,130 @@
+<% content_for :title, "パスワード生成 - CyberVault" %>
+<%= render layout: "shared/cybervault_app_layout", locals: {
+  active_nav: :password_new,
+  page_title: "パスワード生成",
+  header_variant: :default,
+  compact_header: true,
+  main_overflow: :hidden
+} do %>
+  <section class="flex-1 min-h-0 flex flex-col px-6 py-4 z-10 overflow-hidden">
+    <div class="max-w-4xl mx-auto w-full flex-1 min-h-0 flex flex-col gap-3">
+      <%= render "shared/object_errors", object: @password %>
+      <%= form_with model: @password, url: passwords_path, local: true, class: "flex-1 min-h-0 flex flex-col gap-3", data: { controller: "password-generator" } do |f| %>
+        <%= f.hidden_field :entropy_bits, data: { password_generator_target: "entropyBits" } %>
+        <!-- URL / Username 1行 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="glass-panel p-3 rounded-lg">
+            <label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1.5" for="password_website_url">ウェブサイトURL</label>
+            <div class="relative flex items-center">
+              <span class="material-icons absolute left-3 text-slate-500 text-lg">language</span>
+              <%= f.text_field :website_url, class: "w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-3 py-2 text-white placeholder:text-slate-600 focus:border-primary/40 focus:ring-0 transition-all text-sm", placeholder: "https://example.com", id: "password_website_url" %>
+            </div>
+          </div>
+          <div class="glass-panel p-3 rounded-lg">
+            <label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1.5" for="password_username">ユーザー名 / メール</label>
+            <div class="relative flex items-center">
+              <span class="material-icons absolute left-3 text-slate-500 text-lg">person</span>
+              <%= f.text_field :username, class: "w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-3 py-2 text-white placeholder:text-slate-600 focus:border-primary/40 focus:ring-0 transition-all text-sm", placeholder: "user@example.com", id: "password_username" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- 生成されたパスワード + 強度 -->
+        <div class="glass-panel p-4 rounded-lg relative overflow-hidden flex-shrink-0">
+          <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent-purple"></div>
+          <label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-2">生成されたパスワード</label>
+          <div class="flex items-center gap-3">
+            <div class="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 flex items-center justify-between group-hover:border-primary/40 transition-all min-w-0">
+              <%= f.text_field :password, class: "flex-1 min-w-0 font-mono text-lg md:text-xl text-white tracking-widest bg-transparent border-0 focus:ring-0 focus:outline-none", id: "password_value", placeholder: "再生成をクリック", readonly: true, data: { password_generator_target: "output" } %>
+              <div class="flex gap-1 flex-shrink-0 ml-2">
+                <button type="button" class="p-1.5 text-slate-400 hover:text-primary transition-colors" title="コピー" data-action="click->password-generator#copy" aria-label="コピー">
+                  <span class="material-icons text-xl" data-password-generator-target="copyIcon">content_copy</span>
+                </button>
+                <button type="button" class="p-1.5 text-slate-400 hover:text-primary transition-colors neon-glow-cyan rounded-full hover:bg-primary/10" title="再生成" data-action="click->password-generator#regenerate">
+                  <span class="material-icons text-xl">autorenew</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2 flex justify-between items-center">
+            <span class="text-xs text-slate-300">安全度: <span class="text-primary font-bold" data-password-generator-target="strengthLabel">強</span></span>
+            <span class="text-[10px] font-mono text-slate-500" data-password-generator-target="entropyLabel">強度レベル: 強</span>
+          </div>
+          <div class="w-full h-2 mt-1 bg-slate-700 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-300 bg-primary" data-password-generator-target="strengthBarFill" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <!-- 長さ・文字構成・メモ・ボタン を横並び＋下段 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 min-h-0">
+          <div class="glass-panel p-3 rounded-lg flex flex-col min-h-0">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span class="material-icons text-primary text-base">straighten</span>
+                パスワードの長さ
+              </h3>
+              <span class="text-xl font-mono text-primary font-bold" data-password-generator-target="lengthValue">12</span>
+            </div>
+            <input type="range" min="6" max="18" value="12" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary flex-shrink-0" data-password-generator-target="lengthSlider" data-action="input->password-generator#updateLength"/>
+            <div class="flex justify-between mt-1 text-[10px] text-slate-500 font-bold">
+              <span>MIN: 6</span>
+              <span>MAX: 18</span>
+            </div>
+          </div>
+          <div class="glass-panel p-3 rounded-lg flex flex-col min-h-0">
+            <h3 class="text-xs font-bold text-white flex items-center gap-1.5 mb-2">
+              <span class="material-icons text-primary text-base">tune</span>
+              文字構成
+            </h3>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
+                <span class="text-[10px] font-medium text-slate-300">英大文字</span>
+                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                  <input type="checkbox" checked class="sr-only peer" data-password-generator-target="uppercase" data-action="change->password-generator#regenerate"/>
+                  <div class="w-8 h-4 bg-slate-700 rounded-full peer-focus:outline-none after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:border after:border-gray-300"></div>
+                </label>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
+                <span class="text-[10px] font-medium text-slate-300">英小文字</span>
+                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                  <input type="checkbox" checked class="sr-only peer" data-password-generator-target="lowercase" data-action="change->password-generator#regenerate"/>
+                  <div class="w-8 h-4 bg-slate-700 rounded-full peer-focus:outline-none after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:border after:border-gray-300"></div>
+                </label>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
+                <span class="text-[10px] font-medium text-slate-300">数字</span>
+                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                  <input type="checkbox" checked class="sr-only peer" data-password-generator-target="numbers" data-action="change->password-generator#regenerate"/>
+                  <div class="w-8 h-4 bg-slate-700 rounded-full peer-focus:outline-none after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:border after:border-gray-300"></div>
+                </label>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
+                <span class="text-[10px] font-medium text-slate-300">記号</span>
+                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                  <input type="checkbox" checked class="sr-only peer" data-password-generator-target="symbols" data-action="change->password-generator#regenerate"/>
+                  <div class="w-8 h-4 bg-slate-700 rounded-full peer-focus:outline-none after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:border after:border-gray-300"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- メモ + アクション 1行 -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+          <div class="glass-panel p-3 rounded-lg flex-1 min-w-0">
+            <label class="block text-[10px] font-bold text-primary uppercase tracking-wider mb-1.5" for="password_memo">メモ</label>
+            <%= f.text_area :memo, rows: 2, class: "w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-slate-600 focus:border-primary/40 focus:ring-0 transition-all text-sm resize-none", placeholder: "追加情報...", id: "password_memo" %>
+          </div>
+          <div class="flex gap-3 items-end flex-shrink-0">
+            <%= f.submit "保存する", class: "py-3 px-5 rounded-xl bg-primary text-background-dark font-black text-base flex items-center justify-center gap-2 transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(0,242,255,0.4)] cursor-pointer flex-1 min-w-0" %>
+          </div>
+        </div>
+
+        <p class="text-slate-500 text-[10px] flex items-center gap-1.5 flex-shrink-0">
+          <span class="material-icons text-xs">verified_user</span>
+          端末で生成・保存時にサーバーで暗号化して保管します。
+        </p>
+      <% end %>
+    </div>
+  </section>
+<% end %>

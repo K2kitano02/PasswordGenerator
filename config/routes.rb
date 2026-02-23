@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "home#index"
   resource :users, only: %i[new create], path: "signup"
   resource :session, only: %i[new create destroy], path: "login"
-  get "dashboard", to: "dashboard#index"
+  resources :passwords, only: %i[index new create edit show update destroy], path: "passwords"
 
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

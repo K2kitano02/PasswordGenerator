@@ -1,0 +1,36 @@
+<% header_variant = local_assigns[:header_variant] || :default %>
+<% compact_header = local_assigns[:compact_header] %>
+<header class="px-10 <%= compact_header ? 'py-4' : 'py-8' %> flex justify-between items-center z-10 flex-shrink-0">
+  <div>
+    <h2 class="<%= compact_header ? 'text-2xl' : 'text-3xl' %> font-black text-white mb-1 tracking-tight"><%= local_assigns[:page_title] %></h2>
+    <% if local_assigns[:page_subtitle].present? && !compact_header %>
+      <p class="text-slate-400 text-sm"><%= page_subtitle %></p>
+    <% end %>
+  </div>
+  <div class="flex items-center gap-4">
+    <% if header_variant == :dashboard %>
+      <div class="relative w-72 md:w-96">
+        <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+        <input type="text" placeholder="パスワードを検索..." class="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"/>
+      </div>
+      <%= link_to new_password_path, class: "glow-button bg-primary hover:bg-primary/90 text-background-dark px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all no-underline" do %>
+        <span class="material-icons text-xl">add</span>
+        パスワード生成
+      <% end %>
+      <button type="button" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white transition-colors" title="通知">
+        <span class="material-icons">notifications</span>
+      </button>
+    <% else %>
+      <div class="flex flex-col items-end">
+        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Status</p>
+        <p class="text-sm text-primary flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          保護済み
+        </p>
+      </div>
+      <div class="w-10 h-10 rounded-full border-2 border-white/10 overflow-hidden bg-white/5 flex items-center justify-center">
+        <span class="material-icons text-slate-400">person</span>
+      </div>
+    <% end %>
+  </div>
+</header>
