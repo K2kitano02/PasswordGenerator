@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root "home#index"
+  get "generator" => "passwords#generator", as: :generator
   resource :users, only: %i[new create], path: "signup"
   resource :session, only: %i[new create destroy], path: "login"
   resources :passwords, only: %i[index new create edit show update destroy], path: "passwords"

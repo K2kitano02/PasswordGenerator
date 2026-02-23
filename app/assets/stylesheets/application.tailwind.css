@@ -53,6 +53,19 @@
   background-size: 40px 40px;
 }
 
+/* ゲスト生成機: 中央の柔らかいグロー */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+}
+
+/* ゲスト生成機用ガラスカード（プライマリ枠） */
+.glass-card-guest {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
 .font-display {
   font-family: Inter, "Noto Sans JP", sans-serif;
 }

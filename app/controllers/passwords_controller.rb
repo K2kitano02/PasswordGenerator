@@ -1,6 +1,10 @@
 class PasswordsController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: [:generator]
   before_action :set_password, only: %i[show edit update destroy]
+
+  # ゲスト用パスワード生成機（未ログインで表示）
+  def generator
+  end
 
   def index
     @user = current_user
