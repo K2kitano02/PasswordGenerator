@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  before_action :require_login, except: [:generator]
+  before_action :require_login, except: [ :generator ]
   before_action :set_password, only: %i[show edit update destroy]
 
   # ゲスト用パスワード生成機（未ログインで表示）
@@ -11,7 +11,7 @@ class PasswordsController < ApplicationController
     @passwords = current_user.passwords.order(updated_at: :desc)
     # entropy_bits: 1=弱い, 2=普通, 3=強
     @weak_count = current_user.passwords.where(entropy_bits: 1).count
-    @safe_count = current_user.passwords.where(entropy_bits: [2, 3]).count
+    @safe_count = current_user.passwords.where(entropy_bits: [ 2, 3 ]).count
   end
 
   def new
@@ -56,7 +56,7 @@ class PasswordsController < ApplicationController
   def set_password
     @password = current_user.passwords.find(params[:id])
   end
-  
+
   def password_params
     params.require(:password).permit(:website_url, :username, :password, :memo, :entropy_bits)
   end
